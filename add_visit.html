@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Schedule a Vet Visit</h2>
+    <form method="POST">
+        <label for="pet_id">Select Pet:</label>
+        <select name="pet_id" required>
+            {% for pet in pets %}
+                <option value="{{ pet.id }}">{{ pet.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="vet_id">Select Vet:</label>
+        <select name="vet_id" required>
+            {% for vet in vets %}
+                <option value="{{ vet.id }}">{{ vet.username }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="visit_date">Visit Date:</label>
+        <input type="date" name="visit_date" required>
+
+        <label for="reason">Reason:</label>
+        <textarea name="reason" required></textarea>
+
+        <button type="submit">Schedule Visit</button>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    label, select, input, textarea, button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    button {
+        background-color: #FF5733;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

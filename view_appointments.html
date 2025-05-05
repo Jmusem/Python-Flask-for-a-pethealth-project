@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <style>
+        /* General appointments container */
+        .appointments-container {
+            margin: 30px auto;
+            max-width: 900px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .appointments-container h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Styling for table */
+        .appointments-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+            border: 1px solid #ddd;
+        }
+
+        .appointments-table th,
+        .appointments-table td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .appointments-table th {
+            background-color: #ff6f61;
+            color: white;
+            font-size: 16px;
+        }
+
+        .appointments-table td {
+            background-color: #fff;
+            font-size: 14px;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Styling for odd rows */
+        .appointments-table tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        /* Hover effect on rows */
+        .appointments-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Button styling for "Book a new appointment" */
+        a.btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff6f61;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        a.btn:hover {
+            background-color: #e55c51;
+        }
+    
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+    
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    
+        .table th {
+            background-color: #f4f4f4;
+        }
+    
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+    
+        .status-confirmed {
+            color: green;
+            font-weight: bold;
+        }
+    
+        .status-completed {
+            color: blue;
+            font-weight: bold;
+        }
+    
+        .btn-update {
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    
+        .btn-update:hover {
+            background-color: #FF4500;
+        }
+    </style>
+</head>
+
+<h2>My Appointments</h2>
+
+{% if appointments %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pet Name</th>
+                {% if current_user.role == 'petowner' %}
+                    <th>Vet</th>
+                {% elif current_user.role == 'vet' %}
+                    <th>Owner</th>
+                {% endif %}
+                <th>Appointment Date</th>
+                <th>Reason</th>
+                
+                {% if current_user.role == 'vet' %}
+                    <th>Action</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.pet_name }}</td>
+                {% if current_user.role == 'petowner' %}
+                    <td>{{ appointment.vet_name }}</td>
+                {% elif current_user.role == 'vet' %}
+                    <td>{{ appointment.owner_name }}</td>
+                {% endif %}
+                <td>{{ appointment.formatted_date }}</td>
+                <td>{{ appointment.reason }}</td>
+              
+                {% if current_user.role == 'vet' %}
+              
+                        <button type="submit" class="btn-update">Update</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No appointments found.</p>
+{% endif %}
+
+<br>
+<a href="{{ url_for('book_appointment') }}" class="btn">Book a new appointment</a>
+
+{% endblock %}

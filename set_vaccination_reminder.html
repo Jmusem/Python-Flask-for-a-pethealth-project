@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="reminder-container">
+    <h2>Set Vaccination Reminder</h2>
+    <form method="POST" onsubmit="return validateReminderDateTime()">
+        {{ form.hidden_tag() }}
+
+        <label for="pet_id">Select Pet:</label>
+        {{ form.pet_id(class="form-control") }}
+
+        <label for="vaccine_type">Vaccination Type:</label>
+        {{ form.vaccine_type(class="form-control", placeholder="Enter vaccination type") }}
+
+        <label for="reminder_date">Date:</label>
+        {{ form.reminder_date(class="form-control") }}
+
+        <label for="reminder_time">Time:</label>
+        {{ form.reminder_time(class="form-control") }}
+
+        <button type="submit" class="btn">Set Reminder</button>
+    </form>
+</div>
+
+<script>
+    function validateReminderDateTime() {
+        // Get the current date and time
+        var now = new Date();
+
+        // Get the date and time from the form
+        var reminderDate = document.getElementById("reminder_date").value;
+        var reminderTime = document.getElementById("reminder_time").value;
+
+        // Combine date and time into a full datetime string
+        var reminderDateTime = new Date(reminderDate + "T" + reminderTime);
+
+        // Compare the reminder date and time with the current date and time
+        if (reminderDateTime <= now) {
+            // If the reminder date and time is in the past, show an alert and prevent form submission
+            alert("The reminder date and time must be in the future.");
+            return false;
+        }
+
+        // If the reminder date and time is valid, allow form submission
+        return true;
+    }
+</script>
+
+<style>
+    .reminder-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .reminder-container h2 {
+        text-align: center;
+        color: #FF5733;
+    }
+    .reminder-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+    }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .btn {
+        background-color: #FF5733;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #d94a2e;
+    }
+</style>
+{% endblock %}

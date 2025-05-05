@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Health Record</h2>
+<form method="POST" action="{{ url_for('add_health_record') }}">
+    {{ form.hidden_tag() }}
+
+    <div>
+        <label for="pet_name">Pet Name:</label>
+        {{ form.pet_name(class="form-control") }}
+    </div>
+
+    <div>
+        <label for="weight">Weight (kg):</label>
+        {{ form.weight(class="form-control") }}
+    </div>
+
+    <div>
+        <label for="temperature">Temperature (°C):</label>
+        {{ form.temperature(class="form-control") }}
+    </div>
+
+    <div>
+        <label for="diagnosis">Diagnosis:</label>
+        {{ form.diagnosis(class="form-control") }}
+    </div>
+
+    <div>
+        <label for="treatment">Treatment:</label>
+        {{ form.treatment(class="form-control") }}
+    </div>
+
+    <div>
+        <label for="comments">Comments:</label>
+        {{ form.comments(class="form-control") }}
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+{% endblock %}

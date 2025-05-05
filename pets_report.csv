@@ -1,0 +1,5 @@
+ID,Name,Species,Breed,Registration Date,Age (Years),Age (Months),Photo,Owner ID,Date Created
+1,ruffy,dog,bulldog,2025-03-28,1,3,static/uploads\download_2.jpeg,1,2025-03-28 00:30:05
+2,rere,Cat,domesticated,2025-03-29,2,5,static/uploads\images_1.jpeg,1,2025-03-28 00:30:56
+3,fit ,dog ,bulldog ,2025-04-26,1,2,static/uploads\download_2.jpeg,1,2025-04-26 18:59:42
+7,riti,cat,domesticated,2025-04-27,2,3,static/uploads\download_4.jpeg,3,2025-04-27 18:11:31

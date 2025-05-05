@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+        transition: margin-left 0.3s;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #343a40;
+        padding: 20px;
+        color: white;
+        position: fixed;
+        height: 100vh;
+    }
+
+    .sidebar h3 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .sidebar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px 15px;
+        margin: 8px 0;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+        background: #495057;
+    }
+
+    .sidebar a.active {
+        background: #007bff;
+    }
+
+    .content {
+        margin-left: 270px;
+        padding: 30px;
+        width: calc(100% - 270px);
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .btn-custom {
+        margin: 5px;
+    }
+</style>
+
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Admin Panel</h3>
+        <a href="{{ url_for('manage_users') }}" class="active">Manage Users</a>
+        <a href="{{ url_for('manage_pets_admin') }}">Manage Pets</a>
+        <a href="{{ url_for('manage_appointments') }}">Manage Appointments</a>
+        <a href="{{ url_for('manage_health_records') }}">Manage Health Records</a>
+        <a href="{{ url_for('manage_vaccination_reminders') }}">Manage Vaccination Reminders</a> <!-- New Link -->
+        <a href="{{ url_for('generate_all_reports') }}" class="btn btn-primary">
+            Download All Reports
+        </a>
+        
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1 class="text-center mb-4">Admin Dashboard</h1>
+        <div class="card">
+            <p class="text-center">Welcome to the Admin Dashboard! Use the navigation links on the left to manage users, pets, appointments, health records, and vaccination reminders.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

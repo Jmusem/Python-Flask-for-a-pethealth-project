@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">Vet Consultation</h2>
+    
+    <!-- Payment Form -->
+    <div class="payment-container">
+        <h3>M-Pesa Payment</h3>
+        <form id="mpesaForm" class="form">
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount (KES):</label>
+                <input type="number" id="amount" name="amount" required class="form-control">
+            </div>
+            
+            <button type="submit" class="btn btn-success">Pay Now</button>
+        </form>
+        <p id="responseMessage" class="response-message"></p>
+    </div>
+
+    <!-- Email Consultation Form (Initially Hidden) -->
+    <div id="emailForm" style="display: none;">
+        <h3>Send an Email</h3>
+        <form method="POST" action="{{ url_for('send_mail') }}">
+            <div class="form-group">
+                <label for="recipient_email">Recipient Email:</label>
+                <input type="email" id="recipient_email_input" name="recipient_email" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="body">Body:</label>
+                <textarea id="body" name="body" required class="form-control"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Send Email</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("mpesaForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const phone_number = document.getElementById("phone_number").value;
+        const amount = document.getElementById("amount").value;
+
+        fetch("/pay", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone_number, amount })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.ResponseCode === "0") {
+                document.getElementById("responseMessage").textContent = "Payment request sent. Check your phone.";
+                document.getElementById("responseMessage").style.color = "green";
+                
+                // Show the email consultation form after payment
+                document.getElementById("emailForm").style.display = "block";
+            } else {
+                document.getElementById("responseMessage").textContent = "Error: " + data.errorMessage;
+                document.getElementById("responseMessage").style.color = "red";
+            }
+        })
+        .catch(error => {
+            document.getElementById("responseMessage").textContent = "Failed to connect to M-Pesa.";
+            document.getElementById("responseMessage").style.color = "red";
+        });
+    });
+</script>
+
+<style>
+    .container { max-width: 600px; margin: auto; padding: 20px; }
+    .btn { margin: 10px 0; display: block; width: 100%; }
+    .form-group { margin-bottom: 15px; }
+    .response-message { text-align: center; font-weight: bold; margin-top: 15px; }
+</style>
+{% endblock %}

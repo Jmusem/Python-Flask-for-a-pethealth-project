@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+<div class="appointments-container">
+    <h2>Your Appointments</h2>
+    {% if appointments %}
+        <table class="appointments-table">
+            <thead>
+                <tr>
+                    <th>Pet</th>
+                    <th>Vet</th>
+                    <th>Appointment Date</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.pet_name }}</td>
+                    <td>{{ appointment.vet_name }}</td>
+                    <td>{{ appointment.formatted_date }}</td>
+                    <td>{{ appointment.reason }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no appointments yet.</p>
+    {% endif %}
+</div>
+
+<br>
+<a href="{{ url_for('book_appointment') }}">Book a new appointment</a>
+{% endblock %}

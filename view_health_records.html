@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>View Health Records</h2>
+
+{% if health_records %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pet Name</th>
+                <th>Weight (kg)</th>
+                <th>Temperature (°C)</th>
+                <th>Diagnosis</th>
+                <th>Treatment</th>
+                <th>Comments</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in health_records %}
+            <tr>
+                <td>{{ record.pet_name }}</td>
+                <td>{{ record.weight }}</td>
+                <td>{{ record.temperature }}</td>
+                <td>{{ record.diagnosis }}</td>
+                <td>{{ record.treatment }}</td>
+                <td>{{ record.comments }}</td>
+                <td>
+                    <button class="analyze-btn" 
+                            data-pet="{{ record.pet_name }}" 
+                            data-weight="{{ record.weight }}" 
+                            data-temp="{{ record.temperature }}"
+                            data-diagnosis="{{ record.diagnosis }}"
+                            data-treatment="{{ record.treatment }}"
+                            data-comments="{{ record.comments }}">
+                        Analyze
+                    </button>
+                    <!-- Generate Report button inside the loop -->
+                    <a href="{{ url_for('generate_health_report', health_record_id=record.id) }}" class="btn">Generate Report</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Graph Section -->
+    <h3>Health Analysis for <span id="petName"></span></h3>
+    <canvas id="healthChart"></canvas>
+
+    <!-- Health Record Details Section -->
+    <div id="healthDetails" style="display: none;">
+        <h4>Diagnosis:</h4>
+        <p id="diagnosis"></p>
+        <h4>Treatment:</h4>
+        <p id="treatment"></p>
+        <h4>Comments:</h4>
+        <p id="comments"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('healthChart').getContext('2d');
+            let chartInstance = null;
+
+            document.querySelectorAll('.analyze-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const petName = this.dataset.pet;
+                    const weight = parseFloat(this.dataset.weight);
+                    const temperature = parseFloat(this.dataset.temp);
+                    const diagnosis = this.dataset.diagnosis;
+                    const treatment = this.dataset.treatment;
+                    const comments = this.dataset.comments;
+
+                    document.getElementById('petName').textContent = petName;
+
+                    // Show health record details
+                    document.getElementById('diagnosis').textContent = diagnosis;
+                    document.getElementById('treatment').textContent = treatment;
+                    document.getElementById('comments').textContent = comments;
+                    document.getElementById('healthDetails').style.display = 'block';
+
+                    // Destroy previous chart instance if it exists
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+
+                    // Create new chart for weight and temperature
+                    chartInstance = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Weight (kg)', 'Temperature (°C)'],
+                            datasets: [{
+                                label: petName + ' Health Data',
+                                data: [weight, temperature],
+                                backgroundColor: ['blue', 'red'],
+                                borderColor: ['darkblue', 'darkred'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+{% else %}
+    <p>No health records found.</p>
+{% endif %}
+
+<p><a href="{{ url_for('add_health_record') }}">Add a New Health Record</a></p>
+
+{% endblock %}

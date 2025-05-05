@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Edit Vaccination Reminder</h1>
+
+        <form action="{{ url_for('edit_vaccination_reminder', reminder_id=reminder.id) }}" method="POST">
+            <div class="form-group">
+                <label for="vaccine_type">Vaccine Type:</label>
+                <input type="text" id="vaccine_type" name="vaccine_type" class="form-control" value="{{ reminder.vaccine_type }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reminder_datetime">Reminder Date and Time:</label>
+                <input type="datetime-local" id="reminder_datetime" name="reminder_datetime" class="form-control" value="{{ reminder.reminder_datetime }}" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+
+        <br>
+        <a href="{{ url_for('manage_vaccination_reminders') }}" class="btn btn-secondary">Back to Reminder List</a>
+    </div>
+{% endblock %}

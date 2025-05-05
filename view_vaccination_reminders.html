@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="reminders-container">
+    <h2>Your Vaccination Reminders</h2>
+
+    {% if reminders %}
+        <table class="reminders-table">
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Vaccination Type</th>
+                    <th>Reminder Date</th>
+                    <th>Reminder Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reminder in reminders %}
+                <tr>
+                    <td>{{ reminder.pet_name }}</td>
+                    <td>{{ reminder.vaccine_type }}</td>
+                    <td>{{ reminder.reminder_datetime.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ reminder.reminder_datetime.strftime('%H:%M') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No vaccination reminders have been set. <a href="{{ url_for('set_vaccination_reminder') }}">Set one now!</a></p>
+    {% endif %}
+</div>
+
+<style>
+    .reminders-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    h2 {
+        color: #FF5733;
+        margin-bottom: 20px;
+    }
+    table.reminders-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table.reminders-table th, table.reminders-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+    }
+    table.reminders-table th {
+        background-color: #FF5733;
+        color: white;
+    }
+    table.reminders-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    table.reminders-table tr:hover {
+        background-color: #f1c4b8;
+    }
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

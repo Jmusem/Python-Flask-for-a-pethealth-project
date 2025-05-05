@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="dashboard">
+    <h2>Welcome, {{ username if username else 'Guest' }}!</h2>
+    <p>What would you like to do today?</p>
+    
+    <ul class="dashboard-options">
+        <li><a href="{{ url_for('register_pets') }}" class="dashboard-link">Register a Pet</a></li>
+        <li><a href="{{ url_for('manage_pets') }}" class="dashboard-link">Manage Pets</a></li>
+        <li><a href="{{ url_for('book_appointment') }}" class="dashboard-link">Book an Appointment</a></li>
+        <li><a href="{{ url_for('view_appointments') }}" class="dashboard-link">View Upcoming Appointments</a></li>
+        <li><a href="{{ url_for('view_health_records') }}" class="dashboard-link">View Pet Health Records</a></li>
+        <li><a href="{{ url_for('set_vaccination_reminder') }}" class="dashboard-link">Set Vaccination Reminder</a></li>
+        
+    
+       
+
+        <li><a href="{{ url_for('send_mail') }}" class="dashboard-link">Send Mail</a></li>
+        <li><a href="{{ url_for('logout') }}" class="dashboard-link">Logout</a></li>
+    </ul>
+</div>
+
+<!-- (your styles remain unchanged) -->
+<style>
+    .dashboard {
+        text-align: center;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .dashboard h2 {
+        color: #FF5733;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+    .dashboard p {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 25px;
+    }
+    .dashboard-options {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .dashboard-options li {
+        margin: 12px 0;
+    }
+    .dashboard-options a {
+        display: block;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 12px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    .dashboard-options a:hover {
+        background-color: #FF5733;
+        color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .appointments-table th, .appointments-table td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    .appointments-table th {
+        background-color: #FF5733;
+        color: white;
+    }
+    .appointments-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .appointments-table tr:hover {
+        background-color: #f1f1f1;
+    }
+    .btn {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+    .btn-primary:hover, .btn-secondary:hover {
+        background-color: #FF5733;
+    }
+    .reminders-list {
+        list-style: none;
+        padding: 0;
+    }
+    .reminders-list li {
+        padding: 10px;
+        background-color: #f1f1f1;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+</style>
+
+{% endblock %}

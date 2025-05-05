@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 20px;">
+    <h1 style="text-align: center; color: #333;">Edit Appointment</h1>
+
+    <form method="POST" action="{{ url_for('edit_appointment_admin', appointment_id=appointment.id) }}" style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); border-radius: 8px;">
+        <!-- Pet Name -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="pet_name" style="font-weight: bold;">Pet Name</label>
+            <input type="text" class="form-control" id="pet_name" name="pet_name" value="{{ appointment.pet_name }}" required style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <!-- Vet Name -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="vet_name" style="font-weight: bold;">Vet Name</label>
+            <input type="text" class="form-control" id="vet_name" name="vet_name" value="{{ appointment.vet_name }}" required style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <!-- Appointment Date -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="appointment_date" style="font-weight: bold;">Appointment Date</label>
+            <input type="date" class="form-control" id="appointment_date" name="appointment_date" value="{{ appointment.appointment_date }}" required style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <!-- Appointment Time -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="time" style="font-weight: bold;">Time</label>
+            <input type="time" class="form-control" id="time" name="time" value="{{ appointment.time }}" required style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <!-- Reason for Appointment -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="reason" style="font-weight: bold;">Reason for Appointment</label>
+            <textarea class="form-control" id="reason" name="reason" rows="4" required style="padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 5px;">{{ appointment.reason }}</textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="text-align: center;">
+            <button type="submit" class="btn" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

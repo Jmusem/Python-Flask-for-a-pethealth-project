@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Register a Pet</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label for="name">Pet Name</label>
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="species">Species</label>
+            {{ form.species(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="breed">Breed</label>
+            {{ form.breed(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="registration_date">Registration Date</label>
+            {{ form.registration_date(class="form-control", type="date", id="registration_date") }}
+        </div>
+
+        <div class="form-group">
+            <label for="age_years">Age (Years)</label>
+            {{ form.age_years(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="age_months">Age (Months)</label>
+            {{ form.age_months(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="photo">Pet Photo</label>
+            {{ form.photo(class="form-control") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register Pet</button>
+    </form>
+</div>
+
+<!-- JavaScript to restrict registration date -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        const regDateInput = document.getElementById('registration_date');
+        regDateInput.value = today;
+        regDateInput.setAttribute('min', today);
+        regDateInput.setAttribute('max', today);
+    });
+</script>
+{% endblock %}

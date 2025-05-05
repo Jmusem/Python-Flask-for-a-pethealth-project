@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="table-container">
+    <h2>Vet Visit Records</h2>
+
+    {% if visits %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Pet Owner</th>
+                    <th>Completed Visits</th>
+                    <th>Pending Appointments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visit in visits %}
+                    <tr>
+                        <td>{{ visit.pet_name }}</td>
+                        <td>{{ visit.pet_owner }}</td>
+                        <td>{{ visit.visit_count }}</td>
+                        <td>{{ visit.pending_appointments }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No visits recorded yet.</p>
+    {% endif %}
+</div>
+
+<!-- Chart Container -->
+<div class="chart-container">
+    <canvas id="visitChart"></canvas>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('visitChart').getContext('2d');
+        
+        const petNames = {{ visits | map(attribute='pet_name') | list | tojson }};
+        const completedVisits = {{ visits | map(attribute='visit_count') | list | tojson }};
+        const pendingAppointments = {{ visits | map(attribute='pending_appointments') | list | tojson }};
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: petNames,
+                datasets: [
+                    {
+                        label: 'Completed Visits',
+                        data: completedVisits,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Pending Appointments',
+                        data: pendingAppointments,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    });
+</script>
+
+<style>
+    .table-container {
+        width: 80%;
+        margin: auto;
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #FF5733;
+        color: white;
+    }
+    .chart-container {
+        width: 80%;
+        margin: 30px auto;
+    }
+</style>
+
+{% endblock %}

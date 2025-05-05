@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Add Vaccination Reminder</h1>
+
+    <form method="POST" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+        <div style="margin-bottom: 15px;">
+            <label for="pet_id">Pet ID:</label>
+            <select name="pet_id" required style="width: 100%; padding: 10px;">
+                <!-- Assuming pets list will be passed to the template -->
+                {% for pet in pets %}
+                    <option value="{{ pet.id }}">{{ pet.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="vaccine_type">Vaccine Type:</label>
+            <input type="text" name="vaccine_type" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="reminder_datetime">Reminder Date and Time:</label>
+            <input type="datetime-local" name="reminder_datetime" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Add Reminder</button>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 20px; max-width: 600px; margin: auto;">
+    <h1 style="text-align: center;">Edit Health Record</h1>
+    <form method="POST">
+        <label>Weight:</label>
+        <input type="text" name="weight" value="{{ health_record.weight }}" required><br><br>
+
+        <label>Temperature:</label>
+        <input type="text" name="temperature" value="{{ health_record.temperature }}" required><br><br>
+
+        <label>Diagnosis:</label>
+        <input type="text" name="diagnosis" value="{{ health_record.diagnosis }}" required><br><br>
+
+        <label>Treatment:</label>
+        <input type="text" name="treatment" value="{{ health_record.treatment }}" required><br><br>
+
+        <label>Comments:</label>
+        <textarea name="comments" rows="4">{{ health_record.comments }}</textarea><br><br>
+
+        <button type="submit" style="background-color: #007BFF; color: white; padding: 10px 20px; border-radius: 5px;">Update</button>
+    </form>
+</div>
+{% endblock %}

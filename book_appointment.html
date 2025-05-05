@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="appointment-container">
+    <h2>Book an Appointment</h2>
+    <form method="POST" action="{{ url_for('book_appointment') }}">
+        {{ form.hidden_tag() }}  <!-- CSRF Protection -->
+
+        <div class="form-group">
+            <label for="pet_name">Pet</label>
+            {{ form.pet_id(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <label for="vet_name">Vet</label>
+            {{ form.vet_id(class="form-control", id="vet_id") }}
+        </div>
+
+        <div class="form-group">
+            <label for="appointment_date">Date & Time</label>
+            {{ form.appointment_date(class="form-control", id="appointment_date", type="datetime-local") }}
+        </div>
+
+        <div class="form-group">
+            <label for="reason">Reason</label>
+            {{ form.reason(class="form-control") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Book Appointment</button>
+    </form>
+
+    <!-- Display Booked Slots -->
+    <div class="booked-slots-container">
+        <h3>Already Booked Slots</h3>
+        <ul id="booked-slots-list"></ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const dateTimeInput = document.getElementById("appointment_date");
+    const vetSelect = document.getElementById("vet_id");
+    const form = document.querySelector("form");
+    const bookedSlotsList = document.getElementById("booked-slots-list");
+    let bookedSlots = [];
+
+    function formatDateTime(date) {
+        return date.toISOString().slice(0, 16);
+    }
+
+    const now = new Date();
+    dateTimeInput.setAttribute("min", formatDateTime(now));
+
+    function fetchBookedSlots(vetId) {
+        if (!vetId) return;
+        fetch(`/get_booked_slots/${vetId}`)
+            .then(response => response.json())
+            .then(data => {
+                bookedSlots = data.map(slot => new Date(slot));
+                updateBookedSlotsList();
+            })
+            .catch(error => console.error("Error fetching booked slots:", error));
+    }
+
+    function updateBookedSlotsList() {
+        bookedSlotsList.innerHTML = "";
+        bookedSlots.forEach(slot => {
+            const listItem = document.createElement("li");
+            listItem.textContent = slot.toLocaleString();
+            bookedSlotsList.appendChild(listItem);
+        });
+    }
+
+    vetSelect.addEventListener("change", function () {
+        fetchBookedSlots(vetSelect.value);
+    });
+
+    function showAlert(message) {
+        const existingAlert = document.getElementById("appointment-alert");
+        if (existingAlert) {
+            existingAlert.textContent = message;
+            existingAlert.style.display = "block";
+            return;
+        }
+
+        const alertDiv = document.createElement("div");
+        alertDiv.id = "appointment-alert";
+        alertDiv.textContent = message;
+        alertDiv.style.color = "red";
+        alertDiv.style.fontWeight = "bold";
+        alertDiv.style.marginTop = "10px";
+        dateTimeInput.parentNode.appendChild(alertDiv);
+    }
+
+    dateTimeInput.addEventListener("change", function () {
+        if (!dateTimeInput.value) return;
+
+        const selectedDate = new Date(dateTimeInput.value);
+        const selectedHour = selectedDate.getHours();
+
+        if (selectedHour < 8 || selectedHour >= 20) {
+            showAlert("Appointments can only be scheduled between 8:00 AM and 8:00 PM.");
+            dateTimeInput.value = "";
+            return;
+        }
+
+        for (let booked of bookedSlots) {
+            let diffMinutes = Math.abs((booked - selectedDate) / 60000);
+            
+            if (diffMinutes === 0) {
+                showAlert("⚠️ This time slot is already booked. Please choose a different time.");
+                dateTimeInput.value = "";
+                return;
+            }
+
+            if (diffMinutes < 30 && booked < selectedDate) {
+                showAlert("⚠️ Please select a time that is at least 30 minutes after an existing appointment.");
+                dateTimeInput.value = "";
+                return;
+            }
+        }
+
+        const alertDiv = document.getElementById("appointment-alert");
+        if (alertDiv) {
+            alertDiv.style.display = "none";
+        }
+    });
+
+    form.addEventListener("submit", function (event) {
+        const selectedDateTime = new Date(dateTimeInput.value);
+
+        if (!dateTimeInput.value) {
+            showAlert("⚠️ Please select a valid appointment date and time.");
+            event.preventDefault();
+            return;
+        }
+
+        const selectedHour = selectedDateTime.getHours();
+
+        if (selectedHour < 8 || selectedHour >= 20) {
+            showAlert("⚠️ Appointments can only be booked between 8:00 AM and 8:00 PM.");
+            event.preventDefault();
+            return;
+        }
+
+        for (let booked of bookedSlots) {
+            let diffMinutes = Math.abs((booked - selectedDateTime) / 60000);
+            
+            if (diffMinutes === 0) {
+                showAlert("⚠️ This time slot is already booked. Please choose a different time.");
+                event.preventDefault();
+                return;
+            }
+
+            if (diffMinutes < 30 && booked < selectedDateTime) {
+                showAlert("⚠️ Please select a time that is at least 30 minutes after an existing appointment.");
+                event.preventDefault();
+                return;
+            }
+        }
+    });
+
+    if (vetSelect.value) {
+        fetchBookedSlots(vetSelect.value);
+    }
+});
+</script>
+
+<style>
+    .appointment-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .booked-slots-container {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f8d7da;
+        border-radius: 5px;
+    }
+
+    h3 {
+        color: #d9534f;
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        padding: 5px;
+        background: #fff;
+        border: 1px solid #d9534f;
+        margin: 5px 0;
+        border-radius: 5px;
+        text-align: center;
+    }
+</style>
+
+{% endblock %}

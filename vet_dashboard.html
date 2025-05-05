@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+    
+    <!-- Header Section -->
+    <div class="dashboard-header">
+        <div class="profile-section">
+            <h2>Welcome, Dr. {{ current_user.username }}</h2>
+        </div>
+    </div>
+
+
+    <!-- Pet Management Section -->
+    <h3>Pet Management</h3>
+    <ul class="dashboard-options">
+        <li><a href="{{ url_for('view_health_records') }}">📖 View Health Records</a></li>
+        <li><a href="{{ url_for('view_vaccination_reminders') }}">💉 View Vaccination Reminder</a></li>
+    </ul>
+
+    <!-- Owner Management Section -->
+    <h3>Owner Dashboard</h3>
+    <ul class="dashboard-options">
+        <li><a href="{{ url_for('view_petowners') }}">👤 View Pet Owners</a></li>
+    </ul>
+
+    <!-- Appointment Management -->
+    <h3>Appointments</h3>
+    <ul class="dashboard-options">
+        <li><a href="{{ url_for('view_appointments') }}">📅 Manage Appointments</a></li>
+         <!-- Added View Visits Link -->
+         <a href="{{ url_for('view_visit') }}">📅 View Visits</a>
+
+    </ul>
+
+    <!-- Logout Option -->
+    <ul class="dashboard-options">
+        <li><a href="{{ url_for('logout') }}" class="logout-link">🚪 Logout</a></li>
+    </ul>
+</div>
+
+<!-- CSS Styling -->
+<style>
+    .dashboard-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .stats-container {
+        list-style: none;
+        padding: 10px;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .dashboard-options {
+        list-style: none;
+        padding: 0;
+    }
+
+    .dashboard-options li {
+        margin: 10px 0;
+    }
+
+    .dashboard-options a {
+        display: block;
+        padding: 12px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        color: #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .dashboard-options a:hover {
+        background-color: #FF5733;
+        color: white;
+    }
+
+    .logout-link {
+        color: #d9534f !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Manage Pets</h2>
+    <div class="d-flex justify-content-center mb-4">
+      <a href="{{ url_for('register_pets') }}" class="btn btn-primary btn-lg">Register New Pet</a>
+    </div>
+
+    {% if pets %}
+      <div class="row justify-content-center">
+        {% for pet in pets %}
+          <div class="col-md-6 col-lg-4 d-flex">
+            <div class="card shadow-sm mb-4 w-100">
+              <img src="{{ pet.photo if pet.photo else '/static/default-pet-image.jpg' }}" class="card-img-top" alt="Pet Photo" style="height: 250px; object-fit: cover; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-center">{{ pet.name }}</h5>
+                <p class="card-text text-center">
+                  <strong>Species:</strong> {{ pet.species }} <br>
+                  <strong>Breed:</strong> {{ pet.breed }} <br>
+                  <strong>Age:</strong> {{ pet.age_years }} years, {{ pet.age_months }} months <br>
+                  <strong>Registered:</strong> {{ pet.registration_date.strftime('%B %d, %Y') }}
+                </p>
+                <div class="mt-auto d-flex justify-content-between">
+                  <a href="#" class="btn btn-info btn-sm w-45">Edit</a>
+                  <a href="#" class="btn btn-danger btn-sm w-45">Delete</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center">You have no pets registered yet. <a href="{{ url_for('register_pets') }}">Register a pet now!</a></p>
+    {% endif %}
+  </div>
+
+  <style>
+    .w-45 {
+      width: 48%;
+    }
+    .card {
+      border-radius: 0.5rem;
+    }
+    .btn {
+      border-radius: 0.5rem;
+    }
+  </style>
+{% endblock %}

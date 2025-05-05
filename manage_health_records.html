@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 20px;">
+    <h1 style="text-align: center; color: #333;">Manage Health Records</h1>
+
+    <!-- Add Button -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{{ url_for('add_health_record') }}" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Add New Health Record</a>
+    </div>
+
+    <!-- Generate Report Button -->
+    
+    {% if health_records %}
+    <table style="width: 90%; margin: 0 auto; border-collapse: collapse; background-color: #fff; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background-color: #007BFF; color: white;">
+                <th style="padding: 12px 15px;">ID</th>
+                <th style="padding: 12px 15px;">Pet Name</th>
+                <th style="padding: 12px 15px;">Weight</th>
+                <th style="padding: 12px 15px;">Temperature</th>
+                <th style="padding: 12px 15px;">Diagnosis</th>
+                <th style="padding: 12px 15px;">Treatment</th>
+                <th style="padding: 12px 15px;">Comments</th>
+                <th style="padding: 12px 15px;">Date Created</th>
+                <th style="padding: 12px 15px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in health_records %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px 15px;">{{ record.id }}</td>
+                <td style="padding: 12px 15px;">{{ record.pet_name }}</td>
+                <td style="padding: 12px 15px;">{{ record.weight }}</td>
+                <td style="padding: 12px 15px;">{{ record.temperature }}</td>
+                <td style="padding: 12px 15px;">{{ record.diagnosis }}</td>
+                <td style="padding: 12px 15px;">{{ record.treatment }}</td>
+                <td style="padding: 12px 15px;">{{ record.comments }}</td>
+                <td style="padding: 12px 15px;">{{ record.created_at }}</td>
+                <td style="padding: 12px 15px;">
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{{ url_for('edit_health_record', record_id=record.id) }}" style="background-color: #ffc107; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none;">Edit</a>
+                        <a href="{{ url_for('delete_health_record', record_id=record.id) }}" style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none;" onclick="return confirm('Are you sure you want to delete this health record?');">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; color: #666;">No health records found.</p>
+    {% endif %}
+</div>
+{% endblock %}

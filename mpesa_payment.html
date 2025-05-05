@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center">M-Pesa Payment</h2>
+    <form id="mpesaForm" class="form">
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="Enter Phone Number" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount (KES):</label>
+            <input type="number" id="amount" name="amount" class="form-control" placeholder="Enter Amount" required>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Pay Now</button>
+    </form>
+    <p id="responseMessage" class="text-center mt-3"></p>
+</div>
+
+<script>
+    document.getElementById("mpesaForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const phone_number = document.getElementById("phone_number").value;
+        const amount = document.getElementById("amount").value;
+
+        fetch("/pay", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone_number, amount })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.ResponseCode === "0") {
+                document.getElementById("responseMessage").textContent = "Payment request sent. Check your phone.";
+                document.getElementById("responseMessage").style.color = "green";
+            } else {
+                document.getElementById("responseMessage").textContent = "Error: " + data.errorMessage;
+                document.getElementById("responseMessage").style.color = "red";
+            }
+        })
+        .catch(error => {
+            document.getElementById("responseMessage").textContent = "Failed to connect to M-Pesa.";
+            document.getElementById("responseMessage").style.color = "red";
+        });
+    });
+</script>
+{% endblock %}

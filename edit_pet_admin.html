@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 20px;">
+    <h1 style="text-align: center; color: #333;">Edit Pet Details</h1>
+
+    <form method="POST" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+        <div style="margin-bottom: 15px;">
+            <label>Name:</label>
+            <input type="text" name="name" value="{{ pet[1] }}" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Species:</label>
+            <input type="text" name="species" value="{{ pet[2] }}" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Breed:</label>
+            <input type="text" name="breed" value="{{ pet[3] }}" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Age (Years):</label>
+            <input type="number" name="age_years" value="{{ pet[4] }}" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Age (Months):</label>
+            <input type="number" name="age_months" value="{{ pet[5] }}" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Registration Date:</label>
+            <input type="date" name="registration_date" value="{{ pet[6] }}" required style="width: 100%; padding: 10px;">
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Update Pet</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

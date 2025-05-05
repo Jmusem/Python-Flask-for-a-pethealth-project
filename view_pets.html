@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Select a Pet for Analysis</h2>
+
+    <label for="petSelect">Choose a pet:</label>
+    <select id="petSelect">
+        <option value="">-- Select a Pet --</option>
+        {% for pet in pets %}
+            <option value="{{ pet.id }}">{{ pet.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button id="analyzeBtn">Analyze</button>
+
+    <!-- Error Message -->
+    <p id="errorMessage" style="color: red; display: none;"></p>
+
+    <div id="petDetails" style="display: none; margin-top: 20px;">
+        <h3>Pet Details</h3>
+        <p><strong>Name:</strong> <span id="petName"></span></p>
+        <p><strong>Species:</strong> <span id="petSpecies"></span></p>
+        <p><strong>Breed:</strong> <span id="petBreed"></span></p>
+        <p><strong>Age:</strong> <span id="petAge"></span></p>
+        <p><strong>Owner ID:</strong> <span id="petOwner"></span></p>
+    </div>
+</div>
+
+<script>
+document.getElementById("analyzeBtn").addEventListener("click", function() {
+    var petId = document.getElementById("petSelect").value;
+    var errorMessage = document.getElementById("errorMessage");
+    var petDetails = document.getElementById("petDetails");
+
+    errorMessage.style.display = "none";
+    petDetails.style.display = "none";
+
+    if (!petId) {
+        errorMessage.textContent = "Please select a pet first.";
+        errorMessage.style.display = "block";
+        return;
+    }
+
+    fetch(`/get_pet_details/${petId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                errorMessage.textContent = data.error;
+                errorMessage.style.display = "block";
+            } else {
+                document.getElementById("petName").textContent = data.name;
+                document.getElementById("petSpecies").textContent = data.species;
+                document.getElementById("petBreed").textContent = data.breed;
+                document.getElementById("petAge").textContent = data.age_years + " years, " + data.age_months + " months";
+                document.getElementById("petOwner").textContent = data.owner_id;
+
+                petDetails.style.display = "block";
+            }
+        })
+        .catch(() => {
+            errorMessage.textContent = "Failed to fetch pet details. Please try again.";
+            errorMessage.style.display = "block";
+        });
+});
+</script>
+{% endblock %}

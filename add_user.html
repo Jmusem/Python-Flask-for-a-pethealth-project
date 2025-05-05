@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 20px; max-width: 600px; margin: auto;">
+    <h1 style="text-align: center;">Add User</h1>
+    <form method="POST">
+        <label>Username:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <label>Role:</label>
+        <select name="role" required>
+            <option value="petowner">Pet Owner</option>
+            <option value="vet">Vet</option>
+            <option value="admin">Admin</option>
+        </select><br><br>
+
+        <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px;">Add User</button>
+    </form>
+</div>
+{% endblock %}

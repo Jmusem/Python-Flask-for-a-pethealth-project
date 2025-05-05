@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Update Your Profile</h2>
+    <form method="POST" action="{{ url_for('vet_profile') }}">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ vet.username }}" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ vet.email }}" required>
+        </div>
+        <div>
+            <label for="specialty">Specialty:</label>
+            <input type="text" id="specialty" name="specialty" value="{{ vet.specialty or '' }}">
+        </div>
+        <button type="submit">Update Profile</button>
+    </form>
+{% endblock %}
